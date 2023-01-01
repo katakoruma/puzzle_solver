@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from iteration_utilities import deepflatten
+from itertools import chain, combinations
 
 
 class puzzle:
@@ -43,8 +44,12 @@ class puzzle:
 
 
     def build_cube(self):
-
         self.cube = pd.Series(0, index=self._multiIndex)
+
+    def _powerset(self, iterable):
+       # "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+        s = list(iterable)  # allows duplicate elements
+        return list(chain.from_iterable(combinations(s, r) for r in range(len(s)+1)))
 
 
     def set(self, *args, mode):
@@ -57,6 +62,8 @@ class puzzle:
             for value in elements.keys():
                 if not set(elements[value]).issubset(self.classes[value]):
                     raise(IndexError(f'Incorrect variable(s) in: {elements[value]}'))
+
+            keys = tuple(elements.keys())
                     
 
             for value in self.keys:
@@ -66,16 +73,27 @@ class puzzle:
             elements = {value: elements[value] for value in self.keys}
 
             if mode == 'set':
-            
+                
+                #####
                 elements_bu = elements.copy()
-                for value in self.keys:
+                powerset = self._powerset(keys)
 
-                    elements[value] = set(self.classes[value]) ^ set(elements[value])
+                for tup in powerset.copy():
+                    if tup == ():
+                        powerset.pop( powerset.index(tup) )
+
+                    elif tup == keys:
+                        powerset.pop( powerset.index(tup) )
+                
+                for combi in powerset:
+                    for value in combi:
+                        elements[value] = set(self.classes[value]) ^ set(elements[value])
 
                     index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                     self._cube.loc[index] = -1
 
                     elements = elements_bu.copy()
+                #####
                 
                 index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                 if all(self._cube.loc[index] == -1) and not self._cube.loc[index].empty:
@@ -86,17 +104,28 @@ class puzzle:
                 index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                 self._cube.loc[index] = -1
 
+                #####
                 elements_bu = elements.copy()
-                for value in self.keys:
+                powerset = self._powerset(keys)
 
-                    elements[value] = set(self.classes[value]) ^ set(elements[value])
+                for tup in powerset.copy():
+                    if tup == ():
+                        powerset.pop( powerset.index(tup) )
+
+                    elif tup == keys:
+                        powerset.pop( powerset.index(tup) )
+
+                
+                for combi in powerset:
+                    for value in combi:
+                        elements[value] = set(self.classes[value]) ^ set(elements[value])
 
                     index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                     if all(self._cube.loc[index] == -1) and not self._cube.loc[index].empty:
                         raise(ValueError('Information are contradictory'))
 
                     elements = elements_bu.copy()
-
+                #####
                 
 
     def solve(self):
@@ -119,17 +148,27 @@ class puzzle:
                         self._cube.loc[elements] = 1
 
                         elements = {self.keys[i] : [elements[i]] for i in range(len(self.keys))}
-                        elements_bu = elements.copy()
 
-                        for val in self.keys:
+                        #####
+                        elements_bu = elements.copy()
+                        powerset = self._powerset(self.keys)
+
+                        for tup in powerset.copy():
+                            if tup == ():
+                                powerset.pop( powerset.index(tup) )
+
+                            elif tup == tuple(self.keys):
+                                powerset.pop( powerset.index(tup) )
+                        
+                        for combi in powerset:
+                            for val in combi:
+                                elements[val] = set(self.classes[val]) ^ set(elements[val])
+
+                            index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
+                            self._cube.loc[index] = -1
 
                             elements = elements_bu.copy()
-
-                            elements[val] = set(self.classes[val]) ^ set(elements[val])
-
-                            single_index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
-
-                            self._cube.loc[single_index] = -1
+                        #####
 
                         change = 0
 
@@ -141,20 +180,26 @@ class puzzle:
 
             print('WARNING! Puzzle cannot be solved. More information needed.')
 
+
     def possible_combinations(self, type=list):
-        
+        df = self.cube.index[self.cube >= 0]
+
         if type == list:
-            return self.cube.index[self.cube == 0].tolist()
+            print(df.tolist())
+            return df.tolist()
         else:
-            return self.cube.index[self.cube == 0]
+            print(df)
+            return df
 
     def return_results(self, type=None):
+        df = self.cube.index[self.cube == 1]
 
-        print(self.cube.index[self.cube == 1])
         if type == list:
-            return self.cube.index[self.cube == 1].tolist()
+            print(df.tolist())
+            return df.tolist()
         else:
-            return self.cube.index[self.cube == 1]
+            print(df)
+            return df
 
 
 
