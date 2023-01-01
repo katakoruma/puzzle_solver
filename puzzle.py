@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from iteration_utilities import deepflatten
 
 
 class puzzle:
@@ -10,6 +11,7 @@ class puzzle:
         
         if classes:
             self.multiIndex = classes
+            self.build_cube()
 
 
     @property
@@ -45,9 +47,17 @@ class puzzle:
         self.cube = pd.Series(0, index=self._multiIndex)
 
 
-    def set(self, elements, mode):
+    def set(self, *args, mode):
 
-        if set(elements.keys()).issubset(self.keys):
+        for elements in list(deepflatten(args, ignore=dict)):
+
+            if not set(elements.keys()).issubset(self.keys):
+                raise(IndexError(f'Incorrect class name(s) in: {elements.keys()}'))
+
+            for value in elements.keys():
+                if not set(elements[value]).issubset(self.classes[value]):
+                    raise(IndexError(f'Incorrect variable(s) in: {elements[value]}'))
+                    
 
             for value in self.keys:
                 if not value in elements:
@@ -87,9 +97,7 @@ class puzzle:
 
                     elements = elements_bu.copy()
 
-
-        else:
-            raise(IndexError('Incorrect class name'))
+                
 
     def solve(self):
 
@@ -131,12 +139,22 @@ class puzzle:
 
         if np.count_nonzero(self._cube == 0) != 0 :
 
-            print('ERROR! Puzzle cannot be solved. More information needed.')
+            print('WARNING! Puzzle cannot be solved. More information needed.')
 
-    def return_results(self):
+    def possible_combinations(self, type=list):
+        
+        if type == list:
+            return self.cube.index[self.cube == 0].tolist()
+        else:
+            return self.cube.index[self.cube == 0]
+
+    def return_results(self, type=None):
 
         print(self.cube.index[self.cube == 1])
-        return self.cube.index[self.cube == 1]
+        if type == list:
+            return self.cube.index[self.cube == 1].tolist()
+        else:
+            return self.cube.index[self.cube == 1]
 
 
 
