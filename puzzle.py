@@ -97,7 +97,8 @@ class puzzle:
                 
                 index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                 if all(self._cube.loc[index] == -1) and not self._cube.loc[index].empty:
-                    raise(ValueError('Information are contradictory'))
+                    pass
+                    raise(ValueError('Information is contradictory'))
 
             elif mode == 'unset':
                 
@@ -122,7 +123,8 @@ class puzzle:
 
                     index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
                     if all(self._cube.loc[index] == -1) and not self._cube.loc[index].empty:
-                        raise(ValueError('Information are contradictory'))
+                        pass
+                        raise(ValueError('Information is contradictory'))
 
                     elements = elements_bu.copy()
                 #####
