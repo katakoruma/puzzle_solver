@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 idx = pd.IndexSlice
 
-from tatort_conditions import *
+from conditions import *
 
-puz = puzzle(classes)
+puz = puzzle(tatort_theater.classes)
 
 
-puz.set(a11.set, mode='set')
-#puz.set(a11.unset, mode='unset')
+puz.set(tatort_theater.b6.set, mode='set')
+puz.set(tatort_theater.b6.unset, mode='unset')
 
 
 puz.solve()
