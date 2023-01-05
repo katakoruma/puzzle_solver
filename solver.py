@@ -8,10 +8,10 @@ from conditions import *
 puz = puzzle(tatort_theater.classes)
 
 
-puz.set(tatort_theater.b6.set, mode='set')
-puz.set(tatort_theater.b6.unset, mode='unset')
+puz.set(tatort_theater.b15.set, mode='set')
+puz.set(tatort_theater.b15.unset, mode='unset')
 
 
 puz.solve()
-puz.possible_combinations()
+puz.possible_combinations_single()
 puz.return_results()

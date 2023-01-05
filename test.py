@@ -40,5 +40,6 @@ set = { 1: [3],
 puz.set(set, mode='set')
 
 puz.solve()
+puz.possible_combinations_single()
 puz.return_results()
 
