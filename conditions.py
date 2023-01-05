@@ -432,3 +432,111 @@ class tatort_theater:
                     'Name':             ['Martin', 'Marlon', 'John'],
                     'Besucher':         ['Maskenbildnerin'], 
                     },)
+
+
+    class b15:
+
+        set = []
+        unset = []
+
+        set.append([
+                { 
+                    'Anordnung':        [1,], 
+                    'Zimmer':           ['gruen'], 
+                    'Name':             ['Joan']
+                },
+
+                { 
+                    'Anordnung':        [5,], 
+                    'Zimmer':           ['rot'], 
+                    'Besucher':         ['Regisseurin']
+                },
+                ])
+
+        set.append([
+                    { 
+                    'Anordnung':        [2],
+                    'Name':             ['Mary'], 
+                    'Besucher':         ['Platzanweiserin'],
+                    #'Uhrzeit':          ['18:00'],
+                    },
+
+                    { 
+                    'Anordnung':        [3],
+                    'Zimmer':           ['gelb'], 
+                    'Uhrzeit':          ['03:00']
+                    }, 
+
+                    { 
+                    'Anordnung':        [4],
+                    'Gegenstand':       ['Leuchter'], 
+                    'Besucher':         ['Barkeeper']
+                    },                
+                    ])
+
+
+        set.append({ 
+                    'Zimmer':           ['blau'], 
+                    'Name':             ['Marlon'], 
+                    'Uhrzeit':          ['12:00']
+                    },)
+
+        set.append({ 
+                    'Gegenstand':       ['Whiskeyflasche'], 
+                    'Uhrzeit':          ['09:00']
+                    },)
+
+        set.append(
+                    { 
+                    'Name':             ['Martin'], 
+                    'Gegenstand':       ['Bueste']
+                    },)
+
+
+
+
+        unset.append([             
+                    { 
+                    'Zimmer':           ['gelb'], 
+                    'Name':             ['Mary']
+                    }, 
+
+                    { 
+                    'Zimmer':           ['gelb'], 
+                    'Gegenstand':       ['Leuchter']
+                    },
+
+                    { 
+                    'Name':             ['Mary'], 
+                    'Gegenstand':       ['Leuchter'],
+                    },
+                    ])
+
+
+        unset.append({ 
+                    'Name':             ['Joan', 'Mary'],
+                    'Gegenstand':       ['Whiskeyflasche'], 
+                    },)
+
+
+        unset.append([             
+                    { 
+                    'Zimmer':           ['weiss'], 
+                    'Besucher':         ['Buehnenarbeiter']
+                    }, 
+
+                    { 
+                    'Zimmer':           ['weiss'], 
+                    'Gegenstand':       ['Schere']
+                    },
+
+                    { 
+                    'Besucher':         ['Buehnenarbeiter'], 
+                    'Gegenstand':       ['Schere']
+                    },
+                    ])
+
+
+
+        
+
