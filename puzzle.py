@@ -195,7 +195,7 @@ class puzzle:
 
         for val in self.classes[self.keys[0]]:
             if all(cube.loc[val] == -1) and not cube.loc[index].empty:
-                print('WARNING! Puzzle is contradictory andcannot be solved.')
+                print('WARNING! Puzzle is contradictory and cannot be solved.')
                 return -1
 
         if np.count_nonzero(cube == 0) != 0 :
@@ -208,7 +208,7 @@ class puzzle:
     def possible_combinations_single(self, type=list):
         df = self.cube.index[self.cube >= 0]
 
-        print('Possible combinations : ')
+        #print('Possible combinations : ')
 
         if type == list:
             pprint(df.tolist())
@@ -223,7 +223,7 @@ class puzzle:
 
         df = cube.index[cube == 1]
 
-        print('Final results : ')
+        #print('Final results : ')
 
         if type == list:
             pprint(df.tolist())
@@ -237,24 +237,27 @@ class puzzle:
     def possible_combinations(self):
 
         self.pos_solutions_list = []
-        order = []
+        order = {}
 
         for index in self.classes[self.keys[0]]:
 
-            order.append(np.count_nonzero(self._cube.loc[index] >= 0))
+            order[index] = np.count_nonzero(self._cube.loc[index] >= 0)
 
-        order.sort()
+        order = dict(sorted(order.items(), key=lambda x: x[1]))
 
         cube = self.cube.copy()
 
         self._recursive_iteration(order, cube)
 
 
-    def _recursive_iteration(self, order, cube, recent_indexes=[]):
+    def _recursive_iteration(self, order, cube):
 
         cube_bu = cube.copy()
 
-        key = order.pop(0)
+        key = list(order.keys())[0]
+        order.pop(key)
+
+        print(f'new iteration. use key "{key}"')
         
         n = np.count_nonzero(cube[key] >= 0)
 
@@ -283,6 +286,5 @@ class puzzle:
                 elif solution == 0:
                     if len(order) > 0:
 
-                        recent_indexes.append(recent_indexes)
-                        self._recursive_iteration(self, order, cube, recent_indexes)
+                        self._recursive_iteration(order, cube)
 
