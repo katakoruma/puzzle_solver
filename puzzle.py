@@ -52,12 +52,11 @@ class puzzle:
         s = list(iterable)  # allows duplicate elements
         return list(chain.from_iterable(combinations(s, r) for r in range(len(s)+1)))
 
-    def add_solution(self, index, cube=None):
+    def _add_solution(self, elements, cube=None):
 
         if cube is None:
-            cube = self.cube.copy()
+            cube = self.cube
 
-        elements = cube.loc[index].index[cube.loc[index] == 0].tolist()[0]
         cube.loc[elements] = 1
 
         elements = {self.keys[i] : [elements[i]] for i in range(len(self.keys))}
@@ -77,13 +76,11 @@ class puzzle:
             for val in combi:
                 elements[val] = set(self.classes[val]) ^ set(elements[val])
 
-            index = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
-            cube.loc[index] = -1
+            ind = pd.MultiIndex.from_product(elements.values(), names=elements.keys())
+            cube.loc[ind] = -1
 
             elements = elements_bu.copy()
         #####
-
-        self.cube = cube
 
 
     def set(self, *args, mode):
@@ -167,7 +164,7 @@ class puzzle:
     def solve(self,cube=None, classes_or=None):
 
         if cube is None:
-            cube = self.cube.copy()
+            cube = self.cube
 
         if classes_or is None:
             classes_or = self.classes.copy()
@@ -179,7 +176,7 @@ class puzzle:
             for value in classes_or.keys():
                 for element in classes_or[value]:
 
-                    classes = classes_or
+                    classes = classes_or.copy()
 
                     classes[value] = [element]
 
@@ -187,11 +184,19 @@ class puzzle:
 
                     if np.count_nonzero(cube.loc[index] == 0) == 1:
 
-                        self.add_solution(index, cube)
+                        elements = cube.loc[index].index[cube.loc[index] == 0].tolist()[0]
+
+                        self._add_solution(elements, cube)
 
                         change = 0
 
             change += 1
+
+
+        for val in self.classes[self.keys[0]]:
+            if all(cube.loc[val] == -1) and not cube.loc[index].empty:
+                print('WARNING! Puzzle is contradictory andcannot be solved.')
+                return -1
 
         if np.count_nonzero(cube == 0) != 0 :
             print('WARNING! Puzzle cannot be solved unambiguously. More information needed.')
@@ -212,8 +217,11 @@ class puzzle:
             print(df)
             return df
 
-    def return_results(self, type=None):
-        df = self.cube.index[self.cube == 1]
+    def return_results(self, cube = None, type=None):
+        if cube is None:
+            cube = self.cube.copy()
+
+        df = cube.index[cube == 1]
 
         print('Final results : ')
 
@@ -225,55 +233,56 @@ class puzzle:
             return df
 
 
+
     def possible_combinations(self):
 
-        def recursive_iteration(self, order, cube, recent_indexes=[]):
+        self.pos_solutions_list = []
+        order = []
 
-            key = list(order.keys())[0]
-            order.pop(key)
+        for index in self.classes[self.keys[0]]:
 
-            n = np.count_nonzero(cube[key] >= 0)
+            order.append(np.count_nonzero(self._cube.loc[index] >= 0))
 
-            if n == 0:
-                return -1
-            
-            else:
-
-                indexes = cube[key].index[cube[key] >= 0]
-
-                for i in range(n):
-
-                    index = indexes[i]
-
-                    self.add_solution(self, index, cube)
-
-                    solution = self.solve(cube,)
-                    
-                    if solution == 1:
-                        pass
-                    elif solution == 0:
-                        pass
-
-                        if len(order) > 0:
-
-                            recent_indexes.append(recent_indexes)
-                            recursive_iteration(self, order, cube[key], recent_indexes)
-
-
-
-        order = {}
-
-        for index in self.keys:
-
-            order[index] = np.count_nonzero(self._cube.loc[index] >= 0)
-
-        order = dict(sorted(order.items(), key=lambda x: x[1]))
+        order.sort()
 
         cube = self.cube.copy()
 
-        cube.reorder_levels(order.keys())
-
-        recursive_iteration(order, cube)
+        self._recursive_iteration(order, cube)
 
 
+    def _recursive_iteration(self, order, cube, recent_indexes=[]):
+
+        cube_bu = cube.copy()
+
+        key = order.pop(0)
+        
+        n = np.count_nonzero(cube[key] >= 0)
+
+        if n == 0:
+            return -1
+        
+        else:
+
+            indexes = cube[key].index[cube[key] >= 0].tolist()
+            indexes = [tuple([key]) + x for x in indexes]
+            indexes = pd.MultiIndex.from_tuples(indexes, names=self.classes.keys())
+
+            for i in range(n):
+
+                cube = cube_bu.copy()
+
+                index = indexes[i]
+
+                self._add_solution(index, cube)
+
+                solution = self.solve(cube,)
+                
+                if solution == 1:
+                    self.pos_solutions_list.append(self.return_results(cube=cube,))
+
+                elif solution == 0:
+                    if len(order) > 0:
+
+                        recent_indexes.append(recent_indexes)
+                        self._recursive_iteration(self, order, cube, recent_indexes)
 
