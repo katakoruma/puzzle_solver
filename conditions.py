@@ -171,7 +171,7 @@ class tatort_theater:
             'Anordnung':    [1,2,3,4,5],
             'Zimmer':       ['blau', 'rot', 'gruen', 'weiss', 'gelb'], 
             'Name':         ['Joan', 'John', 'Martin', 'Mary', 'Marlon'], 
-            'Gegenstand':   ['Whiskeyflasche', 'Seil', 'Bueste', 'Schere', 'Leuchter'], 
+            'Gegenstand':   ['Whiskeyflasche', 'Seil', 'Bueste', 'Schere', 'Kerzenhalter'], 
             'Besucher':     ['Platzanweiserin', 'Buehnenarbeiter', 'Regisseurin', 'Barkeeper', 'Maskenbildnerin'], 
             'Uhrzeit':      ['03:00', '09:00', '12:00', '18:00', '21:00'],
         }
@@ -222,7 +222,7 @@ class tatort_theater:
 
         set5 = { 
                     'Zimmer':       ['blau'], 
-                    'Gegenstand':   ['Leuchter'], 
+                    'Gegenstand':   ['Kerzenhalter'], 
                     'Uhrzeit':      ['18:00'], 
                 },
 
@@ -301,7 +301,7 @@ class tatort_theater:
                 },)
 
         set.append({ 
-                    'Gegenstand':   ['Leuchter'], 
+                    'Gegenstand':   ['Kerzenhalter'], 
                     'Besucher':     ['Barkeeper'], 
                     'Uhrzeit':      ['03:00'], 
                 },)
@@ -392,7 +392,7 @@ class tatort_theater:
 
         set.append({ 
                     'Name':             ['Marlon'], 
-                    'Gegenstand':       ['Leuchter'], 
+                    'Gegenstand':       ['Kerzenhalter'], 
                     },)
 
         set.append({ 
@@ -469,7 +469,7 @@ class tatort_theater:
 
                     { 
                     'Anordnung':        [4],
-                    'Gegenstand':       ['Leuchter'], 
+                    'Gegenstand':       ['Kerzenhalter'], 
                     'Besucher':         ['Barkeeper']
                     },                
                     ])
@@ -503,12 +503,12 @@ class tatort_theater:
 
                     { 
                     'Zimmer':           ['gelb'], 
-                    'Gegenstand':       ['Leuchter']
+                    'Gegenstand':       ['Kerzenhalter']
                     },
 
                     { 
                     'Name':             ['Mary'], 
-                    'Gegenstand':       ['Leuchter'],
+                    'Gegenstand':       ['Kerzenhalter'],
                     },
                     ])
 
@@ -536,6 +536,123 @@ class tatort_theater:
                     },
                     ])
 
+    class c5:
+
+        set = []
+        unset = []
+
+
+        set.append( { 
+                    'Anordnung':        [1,3,5], 
+                    'Zimmer':           ['rot', 'blau', 'gelb'], 
+                })
+
+    
+        set.append([             
+                    { 
+                    'Zimmer':           ['gruen'], 
+                    'Besucher':         ['Barkeeper']
+                    }, 
+
+                    { 
+                    'Name':             ['Mary'], 
+                    'Gegenstand':       ['Schere']
+                    },
+                    ])
+
+
+        set.append( { 
+                    'Zimmer':           ['rot'], 
+                    'Gegenstand':       ['Whiskeyflasche'], 
+                })
+
+
+        set.append( { 
+                    'Zimmer':           ['blau'], 
+                    'Uhrzeit':          ['03:00'], 
+                })
+
+        set.append( { 
+                    'Besucher':         ['Platzanweiserin'], 
+                    'Gegenstand':       ['Kerzenhalter'],
+                    'Uhrzeit':          ['12:00'], 
+                })
+
+        set.append( { 
+                    'Name':             ['Marlon'], 
+                    'Besucher':         ['Regisseurin'], 
+                })
+
+        set.append({ 
+                    'Name':             ['Joan'], 
+                    'Uhrzeit':          ['18:00']
+                    },)
+
+        set.append({ 
+                    'Gegenstand':       ['Seil'], 
+                    'Uhrzeit':          ['09:00']
+                    },)
+
+
+
+        unset.append( { 
+                    'Zimmer':           ['gruen'], 
+                    'Name':             ['Mary'], 
+                })
+
+
+        unset.append([ { 
+                    'Anordnung':        [3], 
+                    'Zimmer':           ['rot'], 
+                },
+
+                {
+                    'Anordnung':        [3], 
+                    'Name':             ['Martin'], 
+                },
+
+                {
+                    'Name':             ['Martin'], 
+                    'Gegenstand':       ['Whiskeyflasche'], 
+                },
+                
+                ])
+
+        unset.append({ 
+                    'Besucher':         ['Maskenbildnerin'], 
+                    'Uhrzeit':          ['09:00']
+                    },)
+
+        #additional infos:
+
+        set.append([ 
+                { 
+                    'Anordnung':        [4], 
+                    'Zimmer':           ['gruen'], 
+                },
+
+                { 
+                    'Anordnung':        [2], 
+                    'Name':             ['Mary'], 
+                    'Zimmer':           ['weiss'], 
+                }])
+
+        unset.append( { 
+                    'Anordnung':        [2,4,5], 
+                    'Zimmer':           ['blau'], 
+                },)
+
+        unset.append( { 
+                    'Anordnung':        [3], 
+                    'Uhrzeit':         ['03:00', '21:00'], 
+                },)
+
+
+        set.append( { 
+                    'Anordnung':        [5], 
+                    'Besucher':         ['Maskenbildnerin'], 
+                })
+            
 
 
         
